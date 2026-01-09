@@ -20,7 +20,8 @@ connectDB();
 
 const whitelist = [
     'http://localhost:3000', 
-    'http://localhost:5173'
+    'http://localhost:5173',
+    'http://181.43.121.8:5173'
 ];
 
 const corsOptions = {
@@ -28,16 +29,16 @@ const corsOptions = {
         if (!origin) return callback(null, true);
 
         if (whitelist.includes(origin)) {
-            callback();
+            return callback(null, true);
         } else {
-            callback(new Error('No permitido por CORS'));
+            return callback(new Error('No permitido por CORS'), false);
     }
 },
 methods: ['GET', 'POST', 'PUT', 'DELETE'],
 credentials: true
 };
 
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 
 app.use('/guitars', guitarRouter);
