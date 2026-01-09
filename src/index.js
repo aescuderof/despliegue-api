@@ -21,7 +21,8 @@ connectDB();
 const whitelist = [
     'http://localhost:3000', 
     'http://localhost:5173',
-    'http://181.43.121.8:5173'
+    'http://181.43.121.8:5173',
+    'http://181.43.121.8:3000'
 ];
 
 const corsOptions = {
