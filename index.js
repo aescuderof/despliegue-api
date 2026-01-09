@@ -3,15 +3,15 @@ require('dotenv').config();
 const express = require('express');
 const bcriptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const connectDB = require('./config/db');
+const connectDB = require('./src/config/db');
 const cors = require('cors');
 
-const auth = require('./middleware/authorization');
-const guitarRouter = require('./routes/guitar.routes');
+const auth = require('./src/middleware/authorization');
+const guitarRouter = require('./src/routes/guitar.routes');
 
-const Guitar = require('./models/Guitar');
-const User = require('./models/User');
-const Cart = require('./models/Cart');
+const Guitar = require('./src/models/Guitar');
+const User = require('./src/models/User');
+const Cart = require('./src/models/Cart');
 const PORT = process.env.PORT || 3000;
 
 const app = express();
@@ -28,9 +28,17 @@ const whitelist = [
 ];
 
 const corsOptions = {
-  origin: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true,
+    origin: function (origin, callback) {
+        if (!origin) return callback(null, true);
+
+        if (whitelist.includes(origin)) {
+            return callback(null, true);
+        } else {
+            return callback(new Error('No permitido por CORS'), false);
+    }
+},
+methods: ['GET', 'POST', 'PUT', 'DELETE'],
+credentials: true
 };
 
 app.use(cors(corsOptions));
